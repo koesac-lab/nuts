@@ -125,7 +125,7 @@
     </section>
   </div>
 </main>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+<script src="./qrcode.min.js" defer></script>
 <script>
   const translations = {
     en: { label:'Language', eyebrow:'Food allergy · Please read', title:'Peanut & tree nut allergy', intro:'I have a peanut and tree nut allergy. Even a small amount could cause a severe allergic reaction requiring medical attention.', peanuts:'NO PEANUTS', treeNuts:'NO TREE NUTS', avoidTitle:'I cannot eat peanuts or tree nuts', avoidBody:'This includes their oils, extracts and flours. They may be in pesto, sauces, spreads and baked goods.', nutsTitle:'Tree nuts I need to avoid include', nuts:['Almond','Hazelnut','Macadamia nut','Brazil nut','Pistachio','Cashew','Pecan','Walnut'], cautionTitle:'Prevent cross-contact', cautionBody:'Please use clean gloves, utensils, surfaces, cookware and frying oil when preparing my meal. Thank you!', questionTitle:'Does this food contain peanuts or tree nuts?', questionBody:'Please check the ingredients and how it is prepared before serving.', shareTitle:'Share this card', shareBody:'Scan to open this page in the selected language.', copy:'Copy link', copied:'Link copied', copyFailed:'Unable to copy automatically', clarifyTitle:'Clarification: these are OK for me', allowed:['Sesame','Pine nuts','Coconut'], clarifyBody:'I can eat these ingredients only if they have not come into contact with peanuts or tree nuts. For example, pesto made with pine nuts is not automatically safe: please check every ingredient and how it was prepared.' },
@@ -184,6 +184,15 @@
     render(select.value);
   });
   window.addEventListener('DOMContentLoaded', () => render(initialLanguage));
+</script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(error => {
+        console.warn('Offline support unavailable:', error);
+      });
+    });
+  }
 </script>
 </body>
 </html>
