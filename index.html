@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#9e1735">
+  <title>Peanut &amp; tree nut allergy</title>
+  <style>
+    :root { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #211b1d; background: #f5f2ec; color-scheme: light; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 280px; }
+    main { max-width: 700px; margin: auto; background: #f5f2ec; padding-bottom: max(2rem, env(safe-area-inset-bottom)); }
+    .toolbar { background: #fff; display: flex; gap: .75rem; justify-content: space-between; align-items: center; padding: max(.8rem, env(safe-area-inset-top)) clamp(1.1rem, 5vw, 2rem) .8rem; }
+    label { font-weight: 750; font-size: .96rem; }
+    select, button { font: inherit; }
+    select { max-width: 60%; min-width: 142px; min-height: 48px; padding: .5rem .75rem; color: #211b1d; background: white; border: 2px solid #6a5c60; border-radius: 10px; font-weight: 700; }
+    :focus-visible { outline: 3px solid #126dab; outline-offset: 3px; }
+    .hero { background: #9e1735; color: white; padding: 1.65rem clamp(1.1rem, 5vw, 2rem) 1.7rem; }
+    .eyebrow { text-transform: uppercase; letter-spacing: .1em; font-size: .8rem; font-weight: 800; margin: 0 0 .75rem; }
+    h1 { margin: 0; font-size: clamp(2.15rem, 8.7vw, 3.8rem); line-height: 1.05; letter-spacing: -.035em; overflow-wrap: anywhere; }
+    .hero-intro { margin: 1.1rem 0 0; font-size: clamp(1.19rem, 4.9vw, 1.55rem); line-height: 1.38; font-weight: 700; }
+    .symbols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; margin-top: 1.5rem; }
+    .symbol { background: #fff; color: #761028; min-width: 0; padding: .95rem .45rem .85rem; border-radius: 14px; text-align: center; }
+    .symbol svg { display: block; width: 76px; height: 76px; max-width: 100%; margin: auto auto .35rem; }
+    .symbol span { display: block; font-size: clamp(.9rem, 3.8vw, 1.1rem); font-weight: 850; line-height: 1.2; overflow-wrap: anywhere; }
+    .content { padding: 1.4rem clamp(1.1rem, 5vw, 2rem) 0; }
+    section { margin-bottom: 1.4rem; }
+    h2 { margin: 0 0 .55rem; font-size: clamp(1.12rem, 4.5vw, 1.4rem); line-height: 1.25; }
+    p { margin: 0; font-size: 1.075rem; line-height: 1.53; }
+    .panel { border-radius: 15px; padding: 1.15rem; background: white; }
+    .avoid { border: 2px solid #9e1735; }
+    .avoid h2 { color: #8b102d; }
+    .nuts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem .7rem; list-style: none; margin: .9rem 0 0; padding: 0; }
+    .nuts li { border-radius: 8px; background: #fff; padding: .55rem .7rem; font-size: 1rem; line-height: 1.25; font-weight: 650; overflow-wrap: anywhere; }
+    .caution { border-left: 6px solid #a65208; background: #fff1da; }
+    .question { background: #9e1735; color: white; }
+    .question h2 { font-size: clamp(1.3rem, 5.6vw, 1.85rem); }
+    .share { border: 1px solid #d7d1ca; }
+    .share-inner { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-top: .8rem; }
+    #qr { width: 160px; min-height: 160px; display: grid; place-items: center; padding: 8px; background: white; border: 1px solid #dedede; border-radius: 9px; }
+    #qr img, #qr canvas { width: 144px !important; height: 144px !important; display: block; }
+    .share-actions { flex: 1; min-width: 175px; }
+    #share-url { display: block; overflow-wrap: anywhere; color: #2d3440; font-size: .86rem; line-height: 1.4; margin: 0 0 .6rem; }
+    button { border: 0; border-radius: 9px; min-height: 44px; padding: .6rem .85rem; color: white; background: #34303a; font-weight: 750; cursor: pointer; }
+    #share-status { font-size: .92rem; margin-top: .6rem; }
+    .clarify { border: 2px solid #2b7656; background: #e8f5eb; }
+    .clarify h2 { color: #155338; }
+    .allowed { display: flex; gap: .45rem; flex-wrap: wrap; list-style: none; margin: .8rem 0; padding: 0; }
+    .allowed li { border: 1px solid #86bea0; border-radius: 100px; background: white; padding: .4rem .75rem; font-weight: 700; line-height: 1.25; }
+    .clarify p { font-size: 1rem; }
+    @media (min-width: 740px) { main { margin: 2rem auto; border-radius: 18px; overflow: hidden; box-shadow: 0 12px 44px #2410181c; } }
+    @media (max-width: 350px) { .nuts { grid-template-columns: 1fr; } .symbol svg { width: 64px; height: 64px; } }
+    @media print { :root { background: white; } main { max-width: none; } .toolbar, button, #share-status { display: none; } .hero, .question, .symbol { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
+  </style>
+</head>
+<body>
+<main>
+  <div class="toolbar">
+    <label for="language">Language</label>
+    <select id="language" aria-label="Language / Idioma / Langue / Sprache / Lingua">
+      <option value="en">English</option><option value="es">Español</option><option value="fr">Français</option>
+      <option value="de">Deutsch</option><option value="it">Italiano</option><option value="pt">Português</option>
+    </select>
+  </div>
+  <header class="hero">
+    <p class="eyebrow" data-key="eyebrow">Food allergy · Please read</p>
+    <h1 data-key="title">Peanut &amp; tree nut allergy</h1>
+    <p class="hero-intro" data-key="intro">I have a peanut and tree nut allergy. Even a small amount could cause a severe allergic reaction requiring medical attention.</p>
+    <div class="symbols" aria-label="Allergens to avoid">
+      <div class="symbol">
+        <svg viewBox="0 0 80 80" aria-hidden="true" focusable="false">
+          <circle cx="40" cy="40" r="34" fill="#fff" stroke="#9e1735" stroke-width="4"/>
+          <g fill="none" stroke="#733b25" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M27 18c9-4 15 1 15 9 0 5-4 9-7 13-4 6-3 14-10 17-9 4-17-3-16-12 1-7 7-11 11-16 3-4 3-8 7-11Z" transform="translate(7 1) rotate(-12 27 38)"/>
+            <path d="M44 25c9-5 17 0 17 10 0 6-5 9-8 14-4 6-3 12-10 15-8 3-15-3-14-11 1-5 6-10 10-15 3-4 2-9 5-13Z" transform="translate(1 -1)"/>
+            <path d="M22 35l13 5M34 37l10 4M38 52l11 4" stroke-width="1.6"/>
+          </g>
+          <path d="M16 64 64 16" stroke="#9e1735" stroke-width="7" stroke-linecap="round"/>
+        </svg>
+        <span data-key="peanuts">NO PEANUTS</span>
+      </div>
+      <div class="symbol">
+        <svg viewBox="0 0 80 80" aria-hidden="true" focusable="false">
+          <circle cx="40" cy="40" r="34" fill="#fff" stroke="#9e1735" stroke-width="4"/>
+          <g fill="none" stroke="#733b25" stroke-width="2.7" stroke-linejoin="round">
+            <path d="M25 57c-6-14 0-29 9-38 10 8 14 22 8 34-4 8-12 10-17 4Z"/>
+            <path d="M47 58c-5-9-3-18 3-24 7 4 11 12 9 20-2 7-8 9-12 4Z"/>
+            <path d="M35 25c2 9 1 19-4 29M51 41c2 5 3 10 1 15" stroke-width="1.7"/>
+          </g>
+          <path d="M16 64 64 16" stroke="#9e1735" stroke-width="7" stroke-linecap="round"/>
+        </svg>
+        <span data-key="treeNuts">NO TREE NUTS</span>
+      </div>
+    </div>
+  </header>
+  <div class="content">
+    <section class="panel avoid" aria-labelledby="avoid-heading">
+      <h2 id="avoid-heading" data-key="avoidTitle">I cannot eat peanuts or tree nuts</h2>
+      <p data-key="avoidBody">This includes their oils, extracts and flours. They may be in pesto, sauces, spreads and baked goods.</p>
+    </section>
+    <section aria-labelledby="nuts-heading">
+      <h2 id="nuts-heading" data-key="nutsTitle">Tree nuts I need to avoid include</h2>
+      <ul class="nuts" id="nuts-list"><li>Almond</li><li>Hazelnut</li><li>Macadamia nut</li><li>Brazil nut</li><li>Pistachio</li><li>Cashew</li><li>Pecan</li><li>Walnut</li></ul>
+    </section>
+    <section class="panel caution" aria-labelledby="caution-heading">
+      <h2 id="caution-heading" data-key="cautionTitle">Prevent cross-contact</h2>
+      <p data-key="cautionBody">Please use clean gloves, utensils, surfaces, cookware and frying oil when preparing my meal. Thank you!</p>
+    </section>
+    <section class="panel question" aria-labelledby="question-heading">
+      <h2 id="question-heading" data-key="questionTitle">Does this food contain peanuts or tree nuts?</h2>
+      <p data-key="questionBody">Please check the ingredients and how it is prepared before serving.</p>
+    </section>
+    <section class="panel share" id="share-section" aria-labelledby="share-heading" hidden>
+      <h2 id="share-heading" data-key="shareTitle">Share this card</h2>
+      <p data-key="shareBody">Scan to open this page in the selected language.</p>
+      <div class="share-inner">
+        <div id="qr" role="img" aria-label="QR code linking to this allergy card"></div>
+        <div class="share-actions">
+          <span id="share-url"></span>
+          <button type="button" id="copy-button" data-key="copy">Copy link</button>
+          <p id="share-status" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+    <section class="panel clarify" aria-labelledby="clarify-heading">
+      <h2 id="clarify-heading" data-key="clarifyTitle">Clarification: these are OK for me</h2>
+      <ul class="allowed" id="allowed-list"><li>Sesame</li><li>Pine nuts</li><li>Coconut</li></ul>
+      <p data-key="clarifyBody">I can eat these ingredients only if they have not come into contact with peanuts or tree nuts. For example, pesto made with pine nuts is not automatically safe: please check every ingredient and how it was prepared.</p>
+    </section>
+  </div>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+<script>
+  const translations = {
+    en: { label:'Language', eyebrow:'Food allergy · Please read', title:'Peanut & tree nut allergy', intro:'I have a peanut and tree nut allergy. Even a small amount could cause a severe allergic reaction requiring medical attention.', peanuts:'NO PEANUTS', treeNuts:'NO TREE NUTS', avoidTitle:'I cannot eat peanuts or tree nuts', avoidBody:'This includes their oils, extracts and flours. They may be in pesto, sauces, spreads and baked goods.', nutsTitle:'Tree nuts I need to avoid include', nuts:['Almond','Hazelnut','Macadamia nut','Brazil nut','Pistachio','Cashew','Pecan','Walnut'], cautionTitle:'Prevent cross-contact', cautionBody:'Please use clean gloves, utensils, surfaces, cookware and frying oil when preparing my meal. Thank you!', questionTitle:'Does this food contain peanuts or tree nuts?', questionBody:'Please check the ingredients and how it is prepared before serving.', shareTitle:'Share this card', shareBody:'Scan to open this page in the selected language.', copy:'Copy link', copied:'Link copied', copyFailed:'Unable to copy automatically', clarifyTitle:'Clarification: these are OK for me', allowed:['Sesame','Pine nuts','Coconut'], clarifyBody:'I can eat these ingredients only if they have not come into contact with peanuts or tree nuts. For example, pesto made with pine nuts is not automatically safe: please check every ingredient and how it was prepared.' },
+    es: { label:'Idioma', eyebrow:'Alergia alimentaria · Por favor, lea esto', title:'Alergia al cacahuete y a los frutos secos de cáscara', intro:'Tengo alergia al cacahuete (maní) y a los frutos secos de cáscara. Incluso una pequeña cantidad podría provocarme una reacción alérgica grave que requiera atención médica.', peanuts:'SIN CACAHUETES', treeNuts:'SIN FRUTOS SECOS', avoidTitle:'No puedo comer cacahuetes ni frutos secos de cáscara', avoidBody:'Esto incluye sus aceites, extractos y harinas. Pueden estar presentes en pesto, salsas, cremas para untar y productos de panadería y pastelería.', nutsTitle:'Entre los frutos secos que debo evitar se incluyen', nuts:['Almendra','Avellana','Nuez de macadamia','Nuez de Brasil','Pistacho','Anacardo','Nuez pecana','Nuez'], cautionTitle:'Evite la contaminación cruzada', cautionBody:'Por favor, utilice guantes, utensilios, superficies, recipientes de cocina y aceite para freír limpios al preparar mi comida. ¡Gracias!', questionTitle:'¿Contiene este plato cacahuetes o frutos secos de cáscara?', questionBody:'Por favor, compruebe los ingredientes y cómo se prepara antes de servirlo.', shareTitle:'Comparta esta tarjeta', shareBody:'Escanee para abrir esta página en el idioma seleccionado.', copy:'Copiar enlace', copied:'Enlace copiado', copyFailed:'No se pudo copiar automáticamente', clarifyTitle:'Aclaración: puedo comer estos alimentos', allowed:['Sésamo','Piñones','Coco'], clarifyBody:'Puedo comer estos ingredientes solo si no han estado en contacto con cacahuetes ni frutos secos de cáscara. Por ejemplo, el pesto con piñones no es necesariamente seguro: compruebe todos los ingredientes y cómo se ha preparado.' },
+    fr: { label:'Langue', eyebrow:'Allergie alimentaire · Merci de lire', title:'Allergie aux arachides et aux fruits à coque', intro:'Je suis allergique aux arachides (cacahuètes) et aux fruits à coque. Même une petite quantité pourrait provoquer une réaction allergique grave nécessitant une prise en charge médicale.', peanuts:'SANS ARACHIDES', treeNuts:'SANS FRUITS À COQUE', avoidTitle:'Je ne peux pas manger d’arachides ni de fruits à coque', avoidBody:'Cela inclut leurs huiles, extraits et farines. On peut en trouver dans le pesto, les sauces, les pâtes à tartiner et les pâtisseries.', nutsTitle:'Les fruits à coque que je dois éviter comprennent', nuts:['Amande','Noisette','Noix de macadamia','Noix du Brésil','Pistache','Noix de cajou','Noix de pécan','Noix'], cautionTitle:'Évitez toute contamination croisée', cautionBody:'Veuillez utiliser des gants, des ustensiles, des surfaces, des récipients de cuisson et de l’huile de friture propres pour préparer mon repas. Merci !', questionTitle:'Ce plat contient-il des arachides ou des fruits à coque ?', questionBody:'Veuillez vérifier les ingrédients et la méthode de préparation avant de le servir.', shareTitle:'Partager cette carte', shareBody:'Scannez pour ouvrir cette page dans la langue sélectionnée.', copy:'Copier le lien', copied:'Lien copié', copyFailed:'Copie automatique impossible', clarifyTitle:'Précision : je peux manger ces aliments', allowed:['Sésame','Pignons de pin','Noix de coco'], clarifyBody:'Je peux manger ces ingrédients uniquement s’ils n’ont pas été en contact avec des arachides ou des fruits à coque. Par exemple, un pesto aux pignons de pin n’est pas forcément sûr : veuillez vérifier tous les ingrédients et la préparation.' },
+    de: { label:'Sprache', eyebrow:'Lebensmittelallergie · Bitte lesen', title:'Erdnuss- und Baumnussallergie', intro:'Ich bin gegen Erdnüsse und Baumnüsse allergisch. Schon kleinste Mengen können eine schwere allergische Reaktion auslösen, die medizinisch behandelt werden muss.', peanuts:'KEINE ERDNÜSSE', treeNuts:'KEINE BAUMNÜSSE', avoidTitle:'Ich darf keine Erdnüsse oder Baumnüsse essen', avoidBody:'Das gilt auch für daraus hergestellte Öle, Extrakte und Mehle. Sie können in Pesto, Soßen, Aufstrichen und Backwaren enthalten sein.', nutsTitle:'Zu den Baumnüssen, die ich meiden muss, gehören', nuts:['Mandel','Haselnuss','Macadamianuss','Paranuss','Pistazie','Cashewnuss','Pekannuss','Walnuss'], cautionTitle:'Kreuzkontakt vermeiden', cautionBody:'Bitte verwenden Sie bei der Zubereitung meines Essens saubere Handschuhe, Utensilien, Oberflächen, Kochgeschirr und frisches, nicht gemeinsam genutztes Frittieröl. Vielen Dank!', questionTitle:'Enthält dieses Gericht Erdnüsse oder Baumnüsse?', questionBody:'Bitte prüfen Sie vor dem Servieren die Zutaten und die Zubereitung.', shareTitle:'Diese Karte teilen', shareBody:'Scannen, um diese Seite in der ausgewählten Sprache zu öffnen.', copy:'Link kopieren', copied:'Link kopiert', copyFailed:'Automatisches Kopieren nicht möglich', clarifyTitle:'Zur Klarstellung: Diese Zutaten vertrage ich', allowed:['Sesam','Pinienkerne','Kokosnuss'], clarifyBody:'Ich kann diese Zutaten nur essen, wenn sie nicht mit Erdnüssen oder Baumnüssen in Kontakt gekommen sind. Pesto mit Pinienkernen ist zum Beispiel nicht automatisch sicher: Bitte prüfen Sie alle Zutaten und die Zubereitung.' },
+    it: { label:'Lingua', eyebrow:'Allergia alimentare · Si prega di leggere', title:'Allergia alle arachidi e alla frutta a guscio', intro:'Sono allergico/a alle arachidi e alla frutta a guscio. Anche una piccola quantità potrebbe causare una grave reazione allergica che richiede assistenza medica.', peanuts:'NO ARACHIDI', treeNuts:'NO FRUTTA A GUSCIO', avoidTitle:'Non posso mangiare arachidi o frutta a guscio', avoidBody:'Questo comprende oli, estratti e farine derivati da questi alimenti. Possono essere presenti in pesto, salse, creme spalmabili e prodotti da forno.', nutsTitle:'La frutta a guscio che devo evitare comprende', nuts:['Mandorla','Nocciola','Noce di macadamia','Noce del Brasile','Pistacchio','Anacardo','Noce pecan','Noce'], cautionTitle:'Evitate la contaminazione crociata', cautionBody:'Per preparare il mio pasto, usate guanti, utensili, superfici, pentole e olio per friggere puliti. Grazie!', questionTitle:'Questo piatto contiene arachidi o frutta a guscio?', questionBody:'Vi prego di controllare gli ingredienti e la preparazione prima di servirlo.', shareTitle:'Condividi questa scheda', shareBody:'Scansiona per aprire questa pagina nella lingua selezionata.', copy:'Copia il link', copied:'Link copiato', copyFailed:'Impossibile copiare automaticamente', clarifyTitle:'Precisazione: posso mangiare questi alimenti', allowed:['Sesamo','Pinoli','Cocco'], clarifyBody:'Posso mangiare questi ingredienti solo se non sono entrati in contatto con arachidi o frutta a guscio. Per esempio, il pesto con pinoli non è automaticamente sicuro: controllate tutti gli ingredienti e la preparazione.' },
+    pt: { label:'Idioma', eyebrow:'Alergia alimentar · Por favor, leia', title:'Alergia a amendoim e frutos de casca rija', intro:'Tenho alergia a amendoim e frutos de casca rija. Mesmo uma pequena quantidade pode provocar uma reação alérgica grave que exija assistência médica.', peanuts:'SEM AMENDOIM', treeNuts:'SEM FRUTOS DE CASCA RIJA', avoidTitle:'Não posso comer amendoim nem frutos de casca rija', avoidBody:'Isto inclui óleos, extratos e farinhas destes alimentos. Podem estar presentes em pesto, molhos, pastas para barrar e produtos de pastelaria e padaria.', nutsTitle:'Os frutos de casca rija que tenho de evitar incluem', nuts:['Amêndoa','Avelã','Noz de macadâmia','Castanha-do-pará','Pistácio','Caju','Noz-pecã','Noz'], cautionTitle:'Evite a contaminação cruzada', cautionBody:'Por favor, use luvas, utensílios, superfícies, panelas e óleo de fritura limpos ao preparar a minha refeição. Obrigado!', questionTitle:'Este prato contém amendoim ou frutos de casca rija?', questionBody:'Por favor, verifique os ingredientes e a preparação antes de servir.', shareTitle:'Partilhar este cartão', shareBody:'Leia o código para abrir esta página no idioma selecionado.', copy:'Copiar ligação', copied:'Ligação copiada', copyFailed:'Não foi possível copiar automaticamente', clarifyTitle:'Esclarecimento: posso comer estes alimentos', allowed:['Sésamo','Pinhões','Coco'], clarifyBody:'Posso comer estes ingredientes apenas se não tiverem estado em contacto com amendoim ou frutos de casca rija. Por exemplo, pesto com pinhões não é automaticamente seguro: verifique todos os ingredientes e a preparação.' }
+  };
+  const select = document.getElementById('language');
+  const qrBox = document.getElementById('qr');
+  const shareSection = document.getElementById('share-section');
+  const shareUrl = document.getElementById('share-url');
+  const shareStatus = document.getElementById('share-status');
+  const copyButton = document.getElementById('copy-button');
+  let currentLink = '';
+  function fillList(id, values) {
+    document.getElementById(id).replaceChildren(...values.map(value => {
+      const li = document.createElement('li'); li.textContent = value; return li;
+    }));
+  }
+  function publicPage() {
+    return /^https?:$/.test(location.protocol) && !['localhost', '127.0.0.1', '::1'].includes(location.hostname);
+  }
+  function updateShare(lang) {
+    if (!publicPage()) { shareSection.hidden = true; return; }
+    const url = new URL(location.href);
+    url.searchParams.set('lang', lang);
+    url.hash = '';
+    currentLink = url.href;
+    shareSection.hidden = false;
+    shareUrl.textContent = currentLink;
+    shareStatus.textContent = '';
+    qrBox.replaceChildren();
+    if (typeof QRCode === 'function') {
+      new QRCode(qrBox, { text: currentLink, width: 144, height: 144, colorDark: '#171717', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+      qrBox.setAttribute('aria-label', 'QR code: ' + currentLink);
+    } else {
+      qrBox.textContent = 'QR unavailable';
+    }
+  }
+  function render(lang) {
+    const code = Object.hasOwn(translations, lang) ? lang : 'en';
+    const t = translations[code];
+    document.documentElement.lang = code;
+    document.title = t.title;
+    document.querySelector('label[for="language"]').textContent = t.label;
+    document.querySelectorAll('[data-key]').forEach(el => { el.textContent = t[el.dataset.key]; });
+    fillList('nuts-list', t.nuts);
+    fillList('allowed-list', t.allowed);
+    select.value = code;
+    try { localStorage.setItem('allergy-card-language', code); } catch (_) {}
+    updateShare(code);
+  }
+  let saved = 'en';
+  try { saved = localStorage.getItem('allergy-card-language') || 'en'; } catch (_) {}
+  const params = new URLSearchParams(location.search);
+  const initialLanguage = params.has('lang') ? params.get('lang') : saved;
+  select.addEventListener('change', () => {
+    const url = new URL(location.href);
+    url.searchParams.set('lang', select.value);
+    history.replaceState(null, '', url);
+    render(select.value);
+  });
+  copyButton.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(currentLink); shareStatus.textContent = translations[select.value].copied; }
+    catch (_) { shareStatus.textContent = translations[select.value].copyFailed; }
+  });
+  window.addEventListener('DOMContentLoaded', () => render(initialLanguage));
+</script>
+</body>
+</html>
