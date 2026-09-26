@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="No peanuts">
+  <rect width="256" height="256" fill="#fff"/>
+  <circle cx="128" cy="128" r="101" fill="none" stroke="#9e1735" stroke-width="15"/>
+  <path d="M128 52 C106 52 95 69 98 88 C100 101 111 109 111 127 C111 145 99 153 98 169 C96 190 109 204 128 204 C147 204 160 190 158 169 C157 153 145 145 145 127 C145 109 156 101 158 88 C161 69 150 52 128 52Z" fill="#ca925e" stroke="#733b25" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M112 77l14 10m12-12-9 10m-12 77 13 10m14-17-10 11" fill="none" stroke="#844526" stroke-width="4" stroke-linecap="round"/>
+  <path d="M62 194 194 62" fill="none" stroke="white" stroke-width="21" stroke-linecap="round"/>
+  <path d="M62 194 194 62" fill="none" stroke="#9e1735" stroke-width="15" stroke-linecap="round"/>
+</svg>
