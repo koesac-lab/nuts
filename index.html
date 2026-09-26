@@ -44,8 +44,16 @@
     .share { border: 1px solid #d7d1ca; }
     .share { text-align: center; }
     .share p { font-size: .98rem; }
-    #qr { width: 136px; min-height: 136px; display: grid; place-items: center; margin: .8rem auto 0; padding: 8px; background: white; border: 1px solid #dedede; border-radius: 9px; }
+    .qr-trigger { display: block; margin: .8rem auto 0; padding: 0; border: 0; border-radius: 9px; background: transparent; cursor: zoom-in; }
+    #qr { width: 136px; min-height: 136px; display: grid; place-items: center; padding: 8px; background: white; border: 1px solid #dedede; border-radius: 9px; }
     #qr img, #qr canvas { width: 120px !important; height: 120px !important; display: block; }
+    .qr-dialog { box-sizing: border-box; max-width: calc(100vw - 24px); max-height: calc(100dvh - 24px); margin: auto; padding: 16px; border: 0; border-radius: 18px; background: white; color: #211b1d; text-align: center; box-shadow: 0 20px 60px #0005; }
+    .qr-dialog::backdrop { background: #171015c9; }
+    .qr-dialog h2 { margin: .5rem 2.5rem .5rem; font-size: 1.25rem; }
+    .qr-close { display: block; margin: 0 0 0 auto; min-width: 44px; min-height: 44px; border: 0; border-radius: 8px; background: #eee; color: #211b1d; font: inherit; font-size: 1.8rem; cursor: pointer; }
+    #qr-large { width: fit-content; max-width: 100%; margin: .8rem auto 0; padding: 32px; background: white; }
+    #qr-large img, #qr-large canvas { display: block; max-width: 100%; }
+    .qr-trigger:focus-visible, .qr-close:focus-visible { outline: 3px solid #126dab; outline-offset: 3px; }
     .clarify { border: 2px solid #2b7656; background: #e8f5eb; }
     .clarify h2 { color: #155338; }
     .allowed { display: flex; gap: .45rem; flex-wrap: wrap; list-style: none; margin: .8rem 0; padding: 0; }
@@ -116,7 +124,7 @@
     <section class="panel share" id="share-section" aria-labelledby="share-heading" hidden>
       <h2 id="share-heading" data-key="shareTitle">Share this card</h2>
       <p data-key="shareBody">Scan to open this page in the selected language.</p>
-      <div id="qr" role="img" aria-label="QR code linking to this allergy card"></div>
+      <button id="qr-open" class="qr-trigger" type="button" aria-label="Enlarge QR code"><span id="qr" aria-hidden="true"></span></button>
     </section>
     <section class="panel clarify" aria-labelledby="clarify-heading">
       <h2 id="clarify-heading" data-key="clarifyTitle">Clarification: these are OK for me</h2>
@@ -125,6 +133,11 @@
     </section>
   </div>
 </main>
+<dialog id="qr-dialog" class="qr-dialog" aria-labelledby="qr-dialog-title">
+  <button id="qr-close" class="qr-close" type="button" aria-label="Close QR code">&times;</button>
+  <h2 id="qr-dialog-title" data-key="shareTitle">Share this card</h2>
+  <div id="qr-large" role="img" aria-label="Large QR code linking to this allergy card"></div>
+</dialog>
 <script src="./qrcode.min.js" defer></script>
 <script>
   const translations = {
@@ -138,6 +151,19 @@
   const select = document.getElementById('language');
   const qrBox = document.getElementById('qr');
   const shareSection = document.getElementById('share-section');
+  const qrOpen = document.getElementById('qr-open');
+  const qrClose = document.getElementById('qr-close');
+  const qrDialog = document.getElementById('qr-dialog');
+  const qrLarge = document.getElementById('qr-large');
+  const qrUiLabels = {
+    en: { open: 'Enlarge QR code', close: 'Close QR code' },
+    es: { open: 'Ampliar código QR', close: 'Cerrar código QR' },
+    fr: { open: 'Agrandir le code QR', close: 'Fermer le code QR' },
+    de: { open: 'QR-Code vergrößern', close: 'QR-Code schließen' },
+    it: { open: 'Ingrandisci il codice QR', close: 'Chiudi il codice QR' },
+    pt: { open: 'Ampliar código QR', close: 'Fechar código QR' }
+  };
+  let currentQrUrl = '';
   function fillList(id, values) {
     document.getElementById(id).replaceChildren(...values.map(value => {
       const li = document.createElement('li'); li.textContent = value; return li;
@@ -151,11 +177,11 @@
     const url = new URL(location.href);
     url.searchParams.set('lang', lang);
     url.hash = '';
+    currentQrUrl = url.href;
     shareSection.hidden = false;
     qrBox.replaceChildren();
     if (typeof QRCode === 'function') {
       new QRCode(qrBox, { text: url.href, width: 120, height: 120, colorDark: '#171717', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
-      qrBox.setAttribute('aria-label', 'QR code: ' + url.href);
     } else {
       qrBox.textContent = 'QR unavailable';
     }
@@ -170,6 +196,8 @@
     fillList('nuts-list', t.nuts);
     fillList('allowed-list', t.allowed);
     select.value = code;
+    qrOpen.setAttribute('aria-label', qrUiLabels[code].open);
+    qrClose.setAttribute('aria-label', qrUiLabels[code].close);
     try { localStorage.setItem('allergy-card-language', code); } catch (_) {}
     updateShare(code);
   }
@@ -182,6 +210,30 @@
     url.searchParams.set('lang', select.value);
     history.replaceState(null, '', url);
     render(select.value);
+  });
+  qrOpen.addEventListener('click', () => {
+    if (!currentQrUrl) return;
+    qrDialog.showModal();
+    qrLarge.replaceChildren();
+    if (typeof QRCode !== 'function') {
+      qrLarge.textContent = 'QR unavailable';
+      return;
+    }
+    const size = Math.max(160, Math.min(300, window.innerWidth - 120));
+    new QRCode(qrLarge, {
+      text: currentQrUrl, width: size, height: size,
+      colorDark: '#171717', colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+    qrLarge.setAttribute('aria-label', 'QR code: ' + currentQrUrl);
+  });
+  qrClose.addEventListener('click', () => qrDialog.close());
+  qrDialog.addEventListener('close', () => qrOpen.focus());
+  qrDialog.addEventListener('click', event => {
+    if (event.target !== qrDialog) return;
+    const bounds = qrDialog.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right ||
+        event.clientY < bounds.top || event.clientY > bounds.bottom) qrDialog.close();
   });
   window.addEventListener('DOMContentLoaded', () => render(initialLanguage));
 </script>
