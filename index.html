@@ -42,13 +42,10 @@
     .question { background: #9e1735; color: white; }
     .question h2 { font-size: clamp(1.3rem, 5.6vw, 1.85rem); }
     .share { border: 1px solid #d7d1ca; }
-    .share-inner { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-top: .8rem; }
-    #qr { width: 160px; min-height: 160px; display: grid; place-items: center; padding: 8px; background: white; border: 1px solid #dedede; border-radius: 9px; }
-    #qr img, #qr canvas { width: 144px !important; height: 144px !important; display: block; }
-    .share-actions { flex: 1; min-width: 175px; }
-    #share-url { display: block; overflow-wrap: anywhere; color: #2d3440; font-size: .86rem; line-height: 1.4; margin: 0 0 .6rem; }
-    button { border: 0; border-radius: 9px; min-height: 44px; padding: .6rem .85rem; color: white; background: #34303a; font-weight: 750; cursor: pointer; }
-    #share-status { font-size: .92rem; margin-top: .6rem; }
+    .share { text-align: center; }
+    .share p { font-size: .98rem; }
+    #qr { width: 136px; min-height: 136px; display: grid; place-items: center; margin: .8rem auto 0; padding: 8px; background: white; border: 1px solid #dedede; border-radius: 9px; }
+    #qr img, #qr canvas { width: 120px !important; height: 120px !important; display: block; }
     .clarify { border: 2px solid #2b7656; background: #e8f5eb; }
     .clarify h2 { color: #155338; }
     .allowed { display: flex; gap: .45rem; flex-wrap: wrap; list-style: none; margin: .8rem 0; padding: 0; }
@@ -56,7 +53,7 @@
     .clarify p { font-size: 1rem; }
     @media (min-width: 740px) { main { margin: 2rem auto; border-radius: 18px; overflow: hidden; box-shadow: 0 12px 44px #2410181c; } }
     @media (max-width: 350px) { .nuts { grid-template-columns: 1fr; } .symbol svg { width: 64px; height: 64px; } }
-    @media print { :root { background: white; } main { max-width: none; } .toolbar, button, #share-status { display: none; } .hero, .question, .symbol { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
+    @media print { :root { background: white; } main { max-width: none; } .toolbar { display: none; } .hero, .question, .symbol { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
   </style>
 </head>
 <body>
@@ -119,14 +116,7 @@
     <section class="panel share" id="share-section" aria-labelledby="share-heading" hidden>
       <h2 id="share-heading" data-key="shareTitle">Share this card</h2>
       <p data-key="shareBody">Scan to open this page in the selected language.</p>
-      <div class="share-inner">
-        <div id="qr" role="img" aria-label="QR code linking to this allergy card"></div>
-        <div class="share-actions">
-          <span id="share-url"></span>
-          <button type="button" id="copy-button" data-key="copy">Copy link</button>
-          <p id="share-status" role="status" aria-live="polite"></p>
-        </div>
-      </div>
+      <div id="qr" role="img" aria-label="QR code linking to this allergy card"></div>
     </section>
     <section class="panel clarify" aria-labelledby="clarify-heading">
       <h2 id="clarify-heading" data-key="clarifyTitle">Clarification: these are OK for me</h2>
@@ -148,10 +138,6 @@
   const select = document.getElementById('language');
   const qrBox = document.getElementById('qr');
   const shareSection = document.getElementById('share-section');
-  const shareUrl = document.getElementById('share-url');
-  const shareStatus = document.getElementById('share-status');
-  const copyButton = document.getElementById('copy-button');
-  let currentLink = '';
   function fillList(id, values) {
     document.getElementById(id).replaceChildren(...values.map(value => {
       const li = document.createElement('li'); li.textContent = value; return li;
@@ -165,14 +151,11 @@
     const url = new URL(location.href);
     url.searchParams.set('lang', lang);
     url.hash = '';
-    currentLink = url.href;
     shareSection.hidden = false;
-    shareUrl.textContent = currentLink;
-    shareStatus.textContent = '';
     qrBox.replaceChildren();
     if (typeof QRCode === 'function') {
-      new QRCode(qrBox, { text: currentLink, width: 144, height: 144, colorDark: '#171717', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
-      qrBox.setAttribute('aria-label', 'QR code: ' + currentLink);
+      new QRCode(qrBox, { text: url.href, width: 120, height: 120, colorDark: '#171717', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+      qrBox.setAttribute('aria-label', 'QR code: ' + url.href);
     } else {
       qrBox.textContent = 'QR unavailable';
     }
@@ -199,10 +182,6 @@
     url.searchParams.set('lang', select.value);
     history.replaceState(null, '', url);
     render(select.value);
-  });
-  copyButton.addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(currentLink); shareStatus.textContent = translations[select.value].copied; }
-    catch (_) { shareStatus.textContent = translations[select.value].copyFailed; }
   });
   window.addEventListener('DOMContentLoaded', () => render(initialLanguage));
 </script>
