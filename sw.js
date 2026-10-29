@@ -1,9 +1,10 @@
-const CACHE_NAME = 'nut-allergy-card-v1';
+const CACHE_NAME = 'nut-allergy-card-v2-swahili';
 const CACHE_PREFIX = 'nut-allergy-card-';
 const ROOT = new URL(self.registration.scope);
 const HOME = new URL('index.html', ROOT).href;
 const ASSETS = [
   'index.html',
+  'swahili.js',
   'site.webmanifest',
   'favicon.svg',
   'apple-touch-icon.png',
